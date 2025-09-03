@@ -22,8 +22,8 @@ const form = reactive({
   experience: [],
 });
 
-// proste regexy używane też do „zielonej kropki” kroków
-const telRegex = /^\+?[0-9][0-9 \-]{6,14}$/;
+// proste regexy używane do kropek u góry, bardziej zaawansowane w components/inputs
+const telRegex = /^(\d{9}|\d{11})$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -161,7 +161,7 @@ async function submitAll() {
           <BaseInputTel
             v-model="form.phone"
             label="Telefon"
-            :rules="[req, (v) => telRegex.test(v) || 'Niepoprawny telefon']"
+            :rules="[req, (v) => telRegex.test(v) || 'Numer musi mieć 9 lub 11 cyfr']"
           />
         </div>
         <div class="col-12 col-md-6">

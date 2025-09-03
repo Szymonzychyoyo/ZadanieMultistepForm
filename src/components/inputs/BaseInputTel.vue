@@ -5,7 +5,7 @@
     :placeholder="placeholder"
     :rules="telRules"
     clearable
-   
+    maxlength="11"
     @blur="$emit('blur', val)"
   />
 </template>
@@ -23,16 +23,16 @@ const emit = defineEmits(["update:modelValue", "blur"]);
 const val = computed({
   get: () => props.modelValue,
   set: (v) => {
-    // tylko cyfry, spacje, plus i myślniki
-    const clean = (v || "").replace(/[^0-9 +\-]/g, "");
+    // tylko cyfry, maksymalnie 11 znaków
+    const clean = (v || "").replace(/\D/g, "").slice(0, 11);
     emit("update:modelValue", clean);
   },
 });
 
-// dość liberalny wzorzec (7–15 cyfr, opcjonalny +)
-const telRegex = /^\+?[0-9][0-9 \-]{6,14}$/;
+// 9 lub 11 cyfr
+const telRegex = /^(\d{9}|\d{11})$/;
 const telRules = [
   (v) => !!v || "Numer telefonu jest wymagany",
-  (v) => telRegex.test(v) || "Podaj poprawny numer telefonu",
+  (v) => telRegex.test(v) || "Podaj numer w formacie 9 lub 11 cyfr",
 ];
 </script>
