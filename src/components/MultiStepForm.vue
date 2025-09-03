@@ -27,7 +27,7 @@ const telRegex = /^(\d{9}|\d{11})$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
-// reguły mogą być wykorzystywane w template (QInput rules)
+
 const req = (v) => !!v || "Pole jest wymagane";
 const validDate = (v) => dateRegex.test(v) || "Format YYYY-MM-DD";
 const earlierThanToday = (v) => {
@@ -53,7 +53,7 @@ const isStep2Valid = computed(
 
 const isStep3Valid = computed(
   () =>
-    form.experience.length > 0 &&
+    form.experience.length > 0 ||
     form.experience.every((r) => {
       if (!r.company || !r.position || !r.dateFrom || !r.dateTo) return false;
       if (!dateRegex.test(r.dateFrom) || !dateRegex.test(r.dateTo))
@@ -82,7 +82,6 @@ function removeExperience(i) {
 }
 
 async function validateAll() {
-  // zabezpieczenie, gdyby refy jeszcze nie były podpięte
   const r1 = await (form1.value?.validate?.() ?? true);
   const r2 = await (form2.value?.validate?.() ?? true);
   return !!r1 && !!r2 && isStep3Valid.value;
@@ -101,10 +100,8 @@ async function submitAll() {
 
   saving.value = true;
   try {
-    // kopia bez reaktywności
     const payload = JSON.parse(JSON.stringify(form));
 
-    // „strzał” do backendu – symulacja
     const res = await fetch("https://httpbin.org/post", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -130,24 +127,18 @@ async function submitAll() {
 <template>
   <q-stepper v-model="step" animated header-nav>
     <q-step :name="1" title="Dane osobowe" :done="isStep1Valid">
-      <q-form ref="form1" class="row q-col-gutter-md">
-        <div class="col-12 col-md-6">
-          <BaseInputText v-model="form.firstName" label="Imię" :rules="[req]" />
-        </div>
-        <div class="col-12 col-md-6">
-          <BaseInputText
-            v-model="form.lastName"
-            label="Nazwisko"
-            :rules="[req]"
-          />
-        </div>
-        <div class="col-12 col-md-6">
-          <BaseInputDate
-            v-model="form.birthDate"
-            label="Data urodzenia"
-            :rules="[req, validDate, earlierThanToday]"
-          />
-        </div>
+      <q-form ref="form1" class="column q-gutter-md">
+        <BaseInputText v-model="form.firstName" label="Imię" :rules="[req]" />
+        <BaseInputText
+          v-model="form.lastName"
+          label="Nazwisko"
+          :rules="[req]"
+        />
+        <BaseInputDate
+          v-model="form.birthDate"
+          label="Data urodzenia"
+          :rules="[req, validDate, earlierThanToday]"
+        />
       </q-form>
 
       <q-stepper-navigation>
@@ -156,21 +147,20 @@ async function submitAll() {
     </q-step>
 
     <q-step :name="2" title="Kontakt" :done="isStep2Valid">
-      <q-form ref="form2" class="row q-col-gutter-md">
-        <div class="col-12 col-md-6">
-          <BaseInputTel
-            v-model="form.phone"
-            label="Telefon"
-            :rules="[req, (v) => telRegex.test(v) || 'Numer musi mieć 9 lub 11 cyfr']"
-          />
-        </div>
-        <div class="col-12 col-md-6">
-          <BaseInputEmail
-            v-model="form.email"
-            label="Email"
-            :rules="[req, (v) => emailRegex.test(v) || 'Niepoprawny email']"
-          />
-        </div>
+      <q-form ref="form2" class="column q-gutter-md">
+        <BaseInputTel
+          v-model="form.phone"
+          label="Telefon"
+          :rules="[
+            req,
+            (v) => telRegex.test(v) || 'Numer musi mieć 9 lub 11 cyfr',
+          ]"
+        />
+        <BaseInputEmail
+          v-model="form.email"
+          label="Email"
+          :rules="[req, (v) => emailRegex.test(v) || 'Niepoprawny email']"
+        />
       </q-form>
 
       <q-stepper-navigation>
