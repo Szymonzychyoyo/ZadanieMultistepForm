@@ -1,5 +1,12 @@
+src/components/MultiStepForm.vue + 113 - 0
+
 <script setup>
 import { ref, reactive, computed } from "vue";
+import BaseInputText from "./inputs/BaseInputText.vue";
+import BaseInputDate from "./inputs/BaseInputDate.vue";
+import BaseInputTel from "./inputs/BaseInputTel.vue";
+import BaseInputEmail from "./inputs/BaseInputEmail.vue";
+import ExperienceRow from "./experience/ExperienceRow.vue";
 
 const step = ref(1);
 const saving = ref(false);
@@ -114,3 +121,110 @@ async function submitAll() {
   }
 }
 </script>
+<template>
+  <q-stepper v-model="step" animated>
+    <q-step :name="1" title="Dane osobowe" :done="isStep1Valid">
+      <q-form ref="form1" class="row q-col-gutter-md">
+        <div class="col-12 col-md-6">
+          <BaseInputText v-model="form.firstName" label="Imię" :rules="[req]" />
+        </div>
+        <div class="col-12 col-md-6">
+          <BaseInputText
+            v-model="form.lastName"
+            label="Nazwisko"
+            :rules="[req]"
+          />
+        </div>
+        <div class="col-12 col-md-6">
+          <BaseInputDate
+            v-model="form.birthDate"
+            label="Data urodzenia"
+            :rules="[req, validDate, earlierThanToday]"
+          />
+        </div>
+      </q-form>
+
+      <q-stepper-navigation>
+        <q-btn
+          color="primary"
+          label="Dalej"
+          @click="goTo(2)"
+          :disable="!isStep1Valid"
+        />
+      </q-stepper-navigation>
+    </q-step>
+
+    <q-step :name="2" title="Kontakt" :done="isStep2Valid">
+      <q-form ref="form2" class="row q-col-gutter-md">
+        <div class="col-12 col-md-6">
+          <BaseInputTel
+            v-model="form.phone"
+            label="Telefon"
+            :rules="[req, (v) => telRegex.test(v) || 'Niepoprawny telefon']"
+          />
+        </div>
+        <div class="col-12 col-md-6">
+          <BaseInputEmail
+            v-model="form.email"
+            label="Email"
+            :rules="[req, (v) => emailRegex.test(v) || 'Niepoprawny email']"
+          />
+        </div>
+      </q-form>
+
+      <q-stepper-navigation>
+        <q-btn flat label="Wstecz" @click="goTo(1)" />
+        <q-btn
+          class="q-ml-sm"
+          color="primary"
+          label="Dalej"
+          @click="goTo(3)"
+          :disable="!isStep2Valid"
+        />
+      </q-stepper-navigation>
+    </q-step>
+
+    <q-step :name="3" title="Doświadczenie" :done="isStep3Valid">
+      <div class="row q-col-gutter-md">
+        <div
+          v-for="(exp, i) in form.experience"
+          :key="i"
+          class="row col-12 q-col-gutter-md"
+        >
+          <ExperienceRow
+            v-model="form.experience[i]"
+            @remove="removeExperience(i)"
+          />
+        </div>
+      </div>
+      <div class="q-mt-md">
+        <q-btn
+          outline
+          color="primary"
+          icon="add"
+          label="Dodaj doświadczenie"
+          @click="addExperience"
+        />
+      </div>
+      <div v-if="saveResult" class="q-mt-md">
+        <q-banner
+          :class="
+            saveResult.ok ? 'bg-positive text-white' : 'bg-negative text-white'
+          "
+        >
+          {{ saveResult.msg }}
+        </q-banner>
+      </div>
+      <q-stepper-navigation>
+        <q-btn flat label="Wstecz" @click="goTo(2)" />
+        <q-btn
+          class="q-ml-sm"
+          color="primary"
+          label="Wyślij"
+          :loading="saving"
+          @click="submitAll"
+        />
+      </q-stepper-navigation>
+    </q-step>
+  </q-stepper>
+</template>
