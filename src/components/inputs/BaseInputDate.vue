@@ -9,7 +9,7 @@
     @blur="$emit('blur', val)"
   >
     <template #append>
-      <q-icon name="event" class="cursor-pointer">
+      <q-icon name="event" class="cursor-pointer" @mousedown.prevent>
         <q-popup-proxy
           v-model="show"
           cover

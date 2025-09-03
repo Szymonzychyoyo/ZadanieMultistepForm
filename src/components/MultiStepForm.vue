@@ -114,7 +114,7 @@ async function submitAll() {
     if (!res.ok) throw new Error("Błąd zapisu");
     saveResult.value = {
       ok: true,
-      msg: "Dane wysłane poprawnie (symulacja). Zobacz konsolę.",
+      msg: "Dane wysłane poprawnie.Zobacz konsolę.",
     };
     console.log("Wysłany payload:", payload);
     const echo = await res.json();
