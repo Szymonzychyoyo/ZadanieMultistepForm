@@ -1,6 +1,6 @@
 # Zadanie w Vue 3
 
-Myślałem też o rozwiązaniu tego poprzez tworzenie kroków jako komponenty ale uznałem że jest to mniej reużywalne niż tworzenie inputów i dużo mniej praktyczne przy ewentualnym powiększaniu się projektu.
+Myślałem też o rozwiązaniu tego poprzez tworzenie kroków jako komponentów, ale postawiłem na komponenty inputów zamiast całych kroków, bo to prostsze, bardziej reużywalne i bez zbędnego narzutu organizacyjnego, a przy tej skali formularza logika kroków nie była na tyle skomplikowana, żeby potrzebować osobnych komponentów.
 
 ## Użyte biblioteki
 
