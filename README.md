@@ -1,5 +1,7 @@
 # Zadanie w Vue 3
 
+Myślałem też o rozwiązaniu tego poprzez tworzenie kroków jako komponenty ale uznałem że jest to mniej reużywalne niż tworzenie inputów i dużo mniej praktyczne czy ewentualnym powiększaniu się projektu.
+
 ## Użyte biblioteki
 
 - [Vue 3](https://vuejs.org/) – framework aplikacji
