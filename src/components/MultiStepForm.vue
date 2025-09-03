@@ -1,5 +1,3 @@
-src/components/MultiStepForm.vue + 113 - 0
-
 <script setup>
 import { ref, reactive, computed } from "vue";
 import BaseInputText from "./inputs/BaseInputText.vue";
