@@ -12,6 +12,8 @@ import {
   QBanner,
   QInput,
   QIcon,
+  QPopupProxy,
+  QDate,
   Ripple,
 } from "quasar";
 import "quasar/dist/quasar.css";
@@ -34,6 +36,8 @@ app.use(Quasar, {
     QBanner,
     QInput,
     QIcon,
+    QPopupProxy,
+    QDate,
   },
   directives: { Ripple },
 });

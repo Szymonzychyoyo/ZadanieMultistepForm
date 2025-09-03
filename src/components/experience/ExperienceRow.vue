@@ -9,14 +9,16 @@
     <BaseInputDate
       v-model="item.dateFrom"
       label="Data od"
-      :rules="[req, validDate, notAfterTo]"
+      :rules="[req, validDate, notAfterToday, notAfterTo]"
+      :max="today"
     />
   </div>
   <div class="col-12 col-md-2">
     <BaseInputDate
       v-model="item.dateTo"
       label="Data do"
-      :rules="[req, validDate, notBeforeFrom]"
+      :rules="[req, validDate, notAfterToday, notBeforeFrom]"
+      :max="today"
     />
   </div>
   <div class="q-mt-sm flex justify-end">
@@ -51,6 +53,8 @@ const item = computed({
 
 const req = (v) => !!v || "Pole jest wymagane";
 const validDate = (v) => /\d{4}-\d{2}-\d{2}/.test(v) || "Format YYYY-MM-DD";
+const today = new Date().toISOString().slice(0, 10);
+const notAfterToday = (v) => new Date(v) <= new Date(today) || "Data nie może być późniejsza niż dziś";
 const notAfterTo = (v) => {
   const from = new Date(v);
   const to = new Date(item.value.dateTo);

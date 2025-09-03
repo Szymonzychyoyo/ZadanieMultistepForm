@@ -58,7 +58,15 @@ const isStep3Valid = computed(
       if (!r.company || !r.position || !r.dateFrom || !r.dateTo) return false;
       if (!dateRegex.test(r.dateFrom) || !dateRegex.test(r.dateTo))
         return false;
-      return new Date(r.dateFrom) <= new Date(r.dateTo);
+      const today = new Date();
+      const todayStart = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate()
+      );
+      const from = new Date(r.dateFrom);
+      const to = new Date(r.dateTo);
+      return from <= to && from <= todayStart && to <= todayStart;
     })
 );
 

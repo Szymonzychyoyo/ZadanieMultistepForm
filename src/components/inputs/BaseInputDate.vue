@@ -9,7 +9,21 @@
     @blur="$emit('blur', val)"
   >
     <template #append>
-      <q-icon name="event" class="cursor-pointer" @click="show = !show" />
+      <q-icon name="event" class="cursor-pointer">
+        <q-popup-proxy
+          v-model="show"
+          cover
+          transition-show="scale"
+          transition-hide="scale"
+        >
+          <q-date
+            v-model="val"
+            mask="YYYY-MM-DD"
+            :max="max"
+            @update:model-value="show = false"
+          />
+        </q-popup-proxy>
+      </q-icon>
     </template>
   </q-input>
 </template>
@@ -22,6 +36,7 @@ const props = defineProps({
   label: { type: String, default: "Data" },
   placeholder: { type: String, default: "" },
   rules: { type: Array, default: () => [] },
+  max: { type: String, default: null },
 });
 const emit = defineEmits(["update:modelValue", "blur"]);
 
