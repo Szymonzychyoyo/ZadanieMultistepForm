@@ -24,6 +24,7 @@ import App from "./App.vue";
 const app = createApp(App);
 app.use(Quasar, {
   plugins: {},
+  config: { dark: true },
   components: {
     QCard,
     QCardSection,

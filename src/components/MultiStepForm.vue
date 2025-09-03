@@ -128,7 +128,7 @@ async function submitAll() {
 }
 </script>
 <template>
-  <q-stepper v-model="step" animated>
+  <q-stepper v-model="step" animated header-nav>
     <q-step :name="1" title="Dane osobowe" :done="isStep1Valid">
       <q-form ref="form1" class="row q-col-gutter-md">
         <div class="col-12 col-md-6">
@@ -151,12 +151,7 @@ async function submitAll() {
       </q-form>
 
       <q-stepper-navigation>
-        <q-btn
-          color="primary"
-          label="Dalej"
-          @click="goTo(2)"
-          :disable="!isStep1Valid"
-        />
+        <q-btn color="primary" label="Dalej" @click="goTo(2)" />
       </q-stepper-navigation>
     </q-step>
 
@@ -180,13 +175,7 @@ async function submitAll() {
 
       <q-stepper-navigation>
         <q-btn flat label="Wstecz" @click="goTo(1)" />
-        <q-btn
-          class="q-ml-sm"
-          color="primary"
-          label="Dalej"
-          @click="goTo(3)"
-          :disable="!isStep2Valid"
-        />
+        <q-btn class="q-ml-sm" color="primary" label="Dalej" @click="goTo(3)" />
       </q-stepper-navigation>
     </q-step>
 
