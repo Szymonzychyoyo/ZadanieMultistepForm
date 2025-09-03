@@ -6,7 +6,7 @@
     :rules="rules"
     clearable
     :maxlength="maxlength"
-    @update:model-value="$emit('update:modelValue', innerValue)"
+   
     @blur="$emit('blur', innerValue)"
   />
 </template>

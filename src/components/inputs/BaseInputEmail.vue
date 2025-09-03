@@ -6,7 +6,7 @@
     :placeholder="placeholder"
     :rules="emailRules"
     clearable
-    @update:model-value="$emit('update:modelValue', val)"
+    
     @blur="$emit('blur', val)"
   />
 </template>
